@@ -153,3 +153,9 @@ export function maxTile(board: Board): number {
   return Math.max(0, ...board.flat());
 }
 
+/** An empty board with two starting tiles. */
+export function startBoard(rng: Rng = Math.random, size = 4): Board {
+  return spawn(spawn(createBoard(size), rng), rng);
+}
+
+export { createRng, type SeededRng } from './rng.js';

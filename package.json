@@ -1,6 +1,6 @@
 {
   "name": "@zixial3/arcade-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Pure, framework-free game logic for 2048.",
   "type": "module",
   "main": "./dist/index.js",

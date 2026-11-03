@@ -14,14 +14,14 @@ A board is a square array of numbers where `0` means empty.
 
 ```js
 import {
-  createBoard,
   move,
   spawn,
   hasMoves,
   canMove,
+  startBoard,
 } from "@zixial3/arcade-core";
 
-let board = spawn(spawn(createBoard())); // empty 4×4 board with two starting tiles
+let board = startBoard(); // empty 4×4 board with two starting tiles
 
 if (canMove(board, "left")) {
   board = move(board, "left"); // slide and merge
@@ -42,7 +42,9 @@ Every function returns a **new** board and never mutates its input.
 | `hasMoves(board)`                     | `true` if any direction would change the board; `false` means game over.                        |
 | `canMove(board, direction)`           | `true` if moving in `direction` would change the board.                                         |
 | `moveWithDetails(board, direction)`   | `{ board, moves, merges, points, changed }`: where every tile went, for animations and scoring. |
+| `startBoard(rng?, size?)`             | Empty board (default 4×4) with two starting tiles.                                              |
 | `createBoard(size?)`                  | Empty board.                                                                                    |
+| `createRng(seed)`                     | Seeded random number generator to pass as `rng`. Its `state` resumes the same sequence.         |
 | `emptyCells(board)`, `maxTile(board)` | Helpers.                                                                                        |
 
 `direction` is `'up' | 'down' | 'left' | 'right'`.
@@ -63,6 +65,19 @@ move([[4, 4, 8, 0], ...], 'left'); // → [[8, 8, 0, 0], ...]
 ```js
 const { board, points } = moveWithDetails([[2, 2, 4, 4], ...], 'left');
 // board[0] → [4, 8, 0, 0], points → 12
+```
+
+### Seeded games
+
+```js
+import { createRng, startBoard, spawn } from "@zixial3/arcade-core";
+
+const rng = createRng(1234);
+let board = startBoard(rng); // same starting tiles for seed 1234, every time
+board = spawn(move(board, "up"), rng); // same spawn for the same move
+
+const saved = rng.state; // save this…
+const resumed = createRng(saved); // …and pick up exactly where you left off
 ```
 
 ## Development
